@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin — Messages reçus</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#fafafa; padding:20px; }
+    h1 { color:#222; }
+    table { border-collapse: collapse; width:100%; margin-top:20px; background:white; }
+    th, td { border:1px solid #ccc; padding:8px; text-align:left; }
+    th { background:#f3f3f3; }
+  </style>
+</head>
+<body>
+  <h1>📩 Messages reçus — CodeRise Agency</h1>
+  <table id="messagesTable">
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Email</th>
+        <th>Projet</th>
+        <th>Message</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAqngDmCstRleB7nm6q8fKgnB5zXqgbcIM",
+      authDomain: "coderise-agency.firebaseapp.com",
+      databaseURL: "https://coderise-agency-default-rtdb.firebaseio.com",
+      projectId: "coderise-agency",
+      storageBucket: "coderise-agency.firebasestorage.app",
+      messagingSenderId: "83774037241",
+      appId: "1:83774037241:web:38a48dd64585cd0b759628"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const contactRef = ref(db, "contacts");
+
+    const tableBody = document.querySelector("#messagesTable tbody");
+
+    onValue(contactRef, (snapshot) => {
+      tableBody.innerHTML = "";
+      snapshot.forEach(child => {
+        const data = child.val();
+        const row = `
+          <tr>
+            <td>${data.nom}</td>
+            <td>${data.email}</td>
+            <td>${data.projet}</td>
+            <td>${data.message}</td>
+            <td>${data.date}</td>
+          </tr>
+        `;
+        tableBody.innerHTML += row;
+      });
+    });
+  </script>
+</body>
+</html>
