@@ -9,30 +9,48 @@
   <link rel="stylesheet" href="assets/css/contact.css">
 </head>
 <body>
+  <!-- ============ HEADER ============ -->
   <header class="site-header">
     <div class="wrap nav">
-      <a class="brand" href="index.html"><img src="assets/svg/coderise-logo-horizontal.svg" alt="CodeRise Agency" class="logo-img"></a>
-      <nav class="main-nav">
+      <a class="brand" href="index.html">
+        <img src="assets/svg/coderise-logo-horizontal.svg" alt="CodeRise Agency" class="logo-img">
+      </a>
+
+      <!-- Bouton menu hamburger -->
+      <button class="menu-toggle" id="menu-btn" aria-label="Ouvrir le menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <!-- Menu principal -->
+      <nav class="main-nav" id="main-nav">
         <a href="index.html">Accueil</a>
         <a href="services.html">Services</a>
         <a href="formations.html">Formations</a>
         <a href="about.html">À propos</a>
+        <a href="contact.html" class="active">Contact</a>
       </nav>
     </div>
   </header>
 
+  <!-- ============ CONTENU PRINCIPAL ============ -->
   <main class="section">
     <div class="wrap">
       <h1>Contact / Demande de devis</h1>
       <p class="muted">Remplissez le formulaire ci-dessous et nous vous répondrons rapidement.</p>
 
       <div class="grid contact-grid">
+        <!-- Formulaire -->
         <form class="card reveal" onsubmit="submitForm(event)">
           <label class="micro muted">Nom complet</label>
           <input id="nom" placeholder="Ex: Fabrice" required>
 
           <label class="micro muted">Email</label>
           <input id="email" type="email" placeholder="exemple@domaine.com" required>
+
+          <label class="micro muted">Numéro de téléphone</label>
+          <input id="telephone" type="tel" placeholder="+243..." required>
 
           <label class="micro muted">Type de projet</label>
           <select id="projet">
@@ -51,6 +69,7 @@
           </div>
         </form>
 
+        <!-- Coordonnées -->
         <aside class="card reveal">
           <h3>Coordonnées</h3>
           <div class="micro muted"><strong>Email</strong><br>contact@coderise.agency</div>
@@ -61,15 +80,24 @@
     </div>
   </main>
 
+  <!-- ============ FOOTER ============ -->
   <footer class="site-footer">
     <div class="wrap footer-grid">
-      <div><img src="assets/svg/coderise-logo-horizontal.svg" alt="CodeRise" class="logo-small"><div class="micro muted">© <span id="year6"></span> CodeRise Agency</div></div>
-      <nav class="micro muted"><a href="index.html">Accueil</a> · <a href="services.html">Services</a></nav>
+      <div>
+        <img src="assets/svg/coderise-logo-horizontal.svg" alt="CodeRise" class="logo-small">
+        <div class="micro muted">© <span id="year6"></span> CodeRise Agency</div>
+      </div>
+      <nav class="micro muted">
+        <a href="index.html">Accueil</a> · 
+        <a href="services.html">Services</a> · 
+        <a href="formations.html">Formations</a>
+      </nav>
     </div>
   </footer>
 
-  <!-- 🔥 Script Firebase -->
+  <!-- ============ SCRIPTS ============ -->
   <script type="module">
+    // Firebase
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
@@ -86,13 +114,15 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
+    // Fonction de soumission du formulaire
     window.submitForm = function (event) {
       event.preventDefault();
 
-      const nom = document.getElementById("nom").value;
-      const email = document.getElementById("email").value;
+      const nom = document.getElementById("nom").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const telephone = document.getElementById("telephone").value.trim();
       const projet = document.getElementById("projet").value;
-      const message = document.getElementById("message").value;
+      const message = document.getElementById("message").value.trim();
 
       const contactRef = ref(db, "contacts");
       const newContact = push(contactRef);
@@ -100,6 +130,7 @@
       set(newContact, {
         nom,
         email,
+        telephone,
         projet,
         message,
         date: new Date().toLocaleString()
@@ -113,5 +144,9 @@
       });
     };
   </script>
+
+  <!-- Script global pour toutes les pages -->
+  <script src="assets/js/main.js"></script>
 </body>
 </html>
+

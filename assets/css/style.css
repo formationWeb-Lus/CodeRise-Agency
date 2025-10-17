@@ -1,3 +1,100 @@
+/* =====================================
+   🟣 MENU RESPONSIVE — CodeRise Agency
+   À inclure dans toutes les pages
+===================================== */
+
+.menu-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  font-size: 1.8rem;
+  padding: 6px;
+  z-index: 1001;
+}
+
+/* Trois barres du bouton hamburger */
+.menu-toggle span {
+  display: block;
+  width: 26px;
+  height: 3px;
+  background: #fff;
+  margin: 5px 0;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+/* Animation du bouton quand il est actif */
+.menu-toggle.active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+.menu-toggle.active span:nth-child(2) {
+  opacity: 0;
+}
+.menu-toggle.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* Version mobile */
+@media (max-width: 850px) {
+  /* Affiche le bouton hamburger */
+  .menu-toggle {
+    display: block;
+  }
+
+  /* Cache le menu par défaut */
+  .main-nav {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 70px;
+    right: 0;
+    width: 100%;
+    background-color: var(--primary);
+    text-align: center;
+    box-shadow: var(--shadow);
+    z-index: 1000;
+    animation: slideDown 0.3s ease;
+  }
+
+  /* Liens du menu sur mobile */
+  .main-nav a {
+    display: block;
+    margin: 16px 0;
+    color: #fff;
+    font-size: 1.1rem;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .main-nav a:hover {
+    color: var(--accent);
+  }
+
+  /* Quand le menu est ouvert */
+  .main-nav.open {
+    display: flex;
+  }
+
+  /* Animation d’ouverture */
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+
+
+
+
+
 /* ===========================================
    🌌 CODE RISE AGENCY — DARK ELEGANT THEME
    Version Pro - UI/UX Premium
