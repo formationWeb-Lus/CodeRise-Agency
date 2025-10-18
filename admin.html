@@ -5,42 +5,66 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Admin — Messages reçus</title>
   <style>
-    body { 
-      font-family: Arial, sans-serif; 
-      background:#fafafa; 
-      padding:20px; 
+    body {
+      font-family: Arial, sans-serif;
+      background: #fafafa;
+      padding: 20px;
     }
-    h1 { color:#222; display:flex; justify-content:space-between; align-items:center; }
-    button { 
-      background:#0078d7; 
-      color:white; 
-      border:none; 
-      padding:8px 12px; 
-      border-radius:6px; 
-      cursor:pointer; 
+    h1 {
+      color: #222;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-    button:hover { background:#005bb5; }
-    table { 
-      border-collapse: collapse; 
-      width:100%; 
-      margin-top:20px; 
-      background:white; 
-      box-shadow: 0 0 8px rgba(0,0,0,0.1); 
+    button {
+      border: none;
+      cursor: pointer;
     }
-    th, td { 
-      border:1px solid #ccc; 
-      padding:8px; 
-      text-align:left; 
-      font-size:14px; 
+    #refreshBtn {
+      background: #0078d7;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 6px;
     }
-    th { background:#f3f3f3; }
-    tr:nth-child(even) { background:#f9f9f9; }
+    #refreshBtn:hover {
+      background: #005bb5;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+      background: white;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+      font-size: 14px;
+    }
+    th {
+      background: #f3f3f3;
+    }
+    tr:nth-child(even) {
+      background: #f9f9f9;
+    }
+    .delete-btn {
+      background: #ff4d4f;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+    .delete-btn:hover {
+      background: #d9363e;
+    }
   </style>
 </head>
 <body>
   <h1>
     📩 Messages reçus — CodeRise Agency
-    <button id="refreshBtn">🔄 Actualiser</button>
+    <div>
+      <button id="refreshBtn">🔄 Actualiser</button>
+    </div>
   </h1>
 
   <table id="messagesTable">
@@ -52,6 +76,7 @@
         <th>Projet</th>
         <th>Message</th>
         <th>Date de demande</th>
+        <th>Action</th>
       </tr>
     </thead>
     <tbody></tbody>
@@ -59,7 +84,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+    import { getDatabase, ref, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAqngDmCstRleB7nm6q8fKgnB5zXqgbcIM",
@@ -77,12 +102,14 @@
     const tableBody = document.querySelector("#messagesTable tbody");
     const refreshBtn = document.getElementById("refreshBtn");
 
+    // Charger les messages
     function chargerMessages() {
       onValue(contactRef, (snapshot) => {
         const messages = [];
         snapshot.forEach(child => {
+          const id = child.key;
           const data = child.val();
-          messages.push(data);
+          messages.push({ id, ...data });
         });
 
         // Trier du plus récent au plus ancien
@@ -91,21 +118,45 @@
         tableBody.innerHTML = "";
         messages.forEach(data => {
           const dateDemande = data.date ? new Date(data.date).toLocaleString("fr-FR") : "—";
-          const row = `
-            <tr>
-              <td>${data.nom || "—"}</td>
-              <td>${data.email || "—"}</td>
-              <td>${data.numero || "—"}</td>
-              <td>${data.projet || "—"}</td>
-              <td>${data.message || "—"}</td>
-              <td>${dateDemande}</td>
-            </tr>
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${data.nom || "—"}</td>
+            <td>${data.email || "—"}</td>
+            <td>${data.numero || "—"}</td>
+            <td>${data.projet || "—"}</td>
+            <td>${data.message || "—"}</td>
+            <td>${dateDemande}</td>
+            <td><button class="delete-btn" data-id="${data.id}">🗑️ Supprimer</button></td>
           `;
-          tableBody.innerHTML += row;
+          tableBody.appendChild(row);
+        });
+
+        // Activer les boutons de suppression
+        document.querySelectorAll(".delete-btn").forEach(btn => {
+          btn.addEventListener("click", (e) => {
+            const id = e.target.getAttribute("data-id");
+            supprimerMessage(id);
+          });
         });
       }, { onlyOnce: true });
     }
 
+    // Supprimer un message
+    function supprimerMessage(id) {
+      if (confirm("Voulez-vous vraiment supprimer ce message ?")) {
+        const messageRef = ref(db, `contacts/${id}`);
+        remove(messageRef)
+          .then(() => {
+            alert("🗑️ Message supprimé avec succès !");
+            chargerMessages();
+          })
+          .catch((err) => {
+            alert("❌ Erreur lors de la suppression : " + err.message);
+          });
+      }
+    }
+
+    // Charger au démarrage
     chargerMessages();
     refreshBtn.addEventListener("click", chargerMessages);
   </script>
