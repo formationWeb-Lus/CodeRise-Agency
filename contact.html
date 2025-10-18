@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Contact — CodeRise Agency</title>
   <meta name="description" content="Contactez CodeRise Agency pour un devis ou une formation." />
-  <link rel="icon" href="images/-CodeRise-Agency-Logo.jpg" type="image/svg+xml">
+  <link rel="icon" href="images/_CodeRise-Agency-Logo.jpg" type="image/jpeg">
   <link rel="stylesheet" href="assets/css/contact.css">
 </head>
 <body>
@@ -18,9 +18,7 @@
 
       <!-- Bouton menu hamburger -->
       <button class="menu-toggle" id="menu-btn" aria-label="Ouvrir le menu">
-        <span></span>
-        <span></span>
-        <span></span>
+        <span></span><span></span><span></span>
       </button>
 
       <!-- Menu principal -->
@@ -61,7 +59,7 @@
           </select>
 
           <label class="micro muted">Message / Brief</label>
-          <textarea id="message" placeholder="Décrivez brièvement votre besoin..."></textarea>
+          <textarea id="message" placeholder="Décrivez brièvement votre besoin..." required></textarea>
 
           <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:12px">
             <button class="btn btn-outline" type="reset">Effacer</button>
@@ -94,9 +92,8 @@
     </div>
   </footer>
 
-  <!-- ============ SCRIPTS ============ -->
+  <!-- ============ SCRIPT FIREBASE ============ -->
   <script type="module">
-    // Firebase
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
@@ -113,15 +110,19 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // Fonction de soumission du formulaire
     window.submitForm = function (event) {
       event.preventDefault();
 
       const nom = document.getElementById("nom").value.trim();
       const email = document.getElementById("email").value.trim();
-      const telephone = document.getElementById("telephone").value.trim();
-      const projet = document.getElementById("projet").value;
+      const numero = document.getElementById("telephone").value.trim();
+      const projet = document.getElementById("projet").value.trim();
       const message = document.getElementById("message").value.trim();
+
+      if (!nom || !email || !numero || !projet || !message) {
+        alert("Veuillez remplir tous les champs !");
+        return;
+      }
 
       const contactRef = ref(db, "contacts");
       const newContact = push(contactRef);
@@ -129,22 +130,21 @@
       set(newContact, {
         nom,
         email,
-        telephone,
+        numero,
         projet,
         message,
-        date: new Date().toLocaleString()
+        date: Date.now() // ✅ format universel
       })
       .then(() => {
         alert("✅ Message envoyé avec succès !");
         event.target.reset();
       })
       .catch((err) => {
-        alert("❌ Erreur lors de l’envoi : " + err.message);
+        alert("❌ Erreur : " + err.message);
       });
     };
   </script>
 
-  <!-- Script global pour toutes les pages -->
   <script src="assets/js/main.js"></script>
 </body>
 </html>
