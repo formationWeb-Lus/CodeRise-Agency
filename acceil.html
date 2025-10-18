@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodeRise Agency — Créez votre projet</title>
+  <meta name="description" content="CodeRise Agency : Création d'applications, sites web, logiciels et formations pour entreprises et particuliers.">
+  <link rel="icon" href="images/_CodeRise-Agency-Logo.jpg" type="image/jpeg">
+  <style>
+    /* ======= RESET & BASE ======= */
+    * { margin:0; padding:0; box-sizing:border-box; font-family: 'Arial', sans-serif; }
+    body { background-color: #e6f0ff; color: #0d1f3c; line-height:1.6; }
+
+    a { text-decoration:none; color: inherit; }
+
+    /* ======= HEADER ======= */
+    header {
+      background-color: #005bb5;
+      color: white;
+      padding: 20px 0;
+    }
+    .wrap { width:90%; max-width:1200px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; }
+    .logo { font-size: 24px; font-weight:bold; }
+    nav a { margin-left:20px; font-weight:bold; color:white; transition: 0.3s; }
+    nav a:hover { color:#ffdd00; }
+
+    /* ======= HERO ======= */
+    .hero {
+      background-color: #3399ff;
+      color:white;
+      text-align:center;
+      padding: 100px 20px 80px 20px;
+    }
+    .hero h1 { font-size: 48px; margin-bottom:20px; }
+    .hero p { font-size: 20px; margin-bottom:30px; }
+    .btn-primary {
+      background-color: #ffdd00;
+      color: #005bb5;
+      padding: 15px 30px;
+      border: none;
+      border-radius:8px;
+      font-size:18px;
+      cursor:pointer;
+      transition:0.3s;
+    }
+    .btn-primary:hover { background-color:#ffc700; }
+
+    /* ======= SERVICES ======= */
+    .services {
+      padding:60px 20px;
+      background:#f0f8ff;
+    }
+    .services h2 { text-align:center; margin-bottom:40px; font-size:36px; color:#005bb5; }
+    .service-cards {
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:20px;
+      max-width:1200px;
+      margin:0 auto;
+    }
+    .card {
+      background:white;
+      padding:20px;
+      border-radius:10px;
+      box-shadow:0 0 10px rgba(0,0,0,0.1);
+      text-align:center;
+      transition:0.3s;
+    }
+    .card:hover { transform: translateY(-5px); box-shadow:0 5px 15px rgba(0,0,0,0.2); }
+    .card h3 { margin-bottom:15px; color:#005bb5; }
+    .card p { font-size:16px; }
+
+    /* ======= CTA ======= */
+    .cta {
+      background:#005bb5;
+      color:white;
+      text-align:center;
+      padding:80px 20px;
+    }
+    .cta h2 { font-size:36px; margin-bottom:20px; }
+    .cta p { font-size:20px; margin-bottom:30px; }
+
+    /* ======= FOOTER ======= */
+    footer { background:#0d1f3c; color:white; text-align:center; padding:30px 20px; }
+    footer a { color:#ffdd00; }
+
+    /* ======= RESPONSIVE ======= */
+    @media(max-width:768px){
+      .hero h1 { font-size:36px; }
+      .services h2, .cta h2 { font-size:28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="wrap">
+      <div class="images/logo">CodeRise Agency</div>
+      <nav>
+        <a href="services.html">Services</a>
+        <a href="contact.html">Créer votre projet</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Donnez vie à votre projet dès aujourd’hui</h1>
+    <p>Applications web, mobiles, sites web, logiciels et systèmes — nous fournissons des services de qualité pour tous.</p>
+    <button class="btn-primary" onclick="window.location.href='contact.html'">
+      👉 Envoyer votre projet
+    </button>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services" id="services">
+    <h2>Nos Services</h2>
+    <div class="service-cards">
+      <div class="card">
+        <h3>Applications Web</h3>
+        <p>Applications web modernes, performantes et adaptées à votre entreprise ou projet personnel.</p>
+      </div>
+      <div class="card">
+        <h3>Applications Mobiles</h3>
+        <p>iOS et Android, des apps intuitives et rapides pour toucher vos utilisateurs partout.</p>
+      </div>
+      <div class="card">
+        <h3>Sites Web & Logiciels</h3>
+        <p>Sites web de toutes formes et logiciels sur mesure pour vos besoins spécifiques et systèmes internes.</p>
+      </div>
+      <div class="card">
+        <h3>Formations</h3>
+        <p>Accompagnement pour entreprises, étudiants et passionnés pour apprendre les technologies et créer leurs projets.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta" id="cta">
+    <h2>Prêt à créer votre projet ?</h2>
+    <p>Nous sommes disponibles pour transformer vos idées en solutions digitales efficaces.</p>
+    <button class="btn-primary" onclick="window.location.href='contact.html'">
+      👉 Envoyer votre projet maintenant
+    </button>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="contact">
+    <p>© <span id="year"></span> CodeRise Agency — <a href="mailto:contact@coderise.agency">contact@coderise.agency</a></p>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+
+</body>
+</html>
