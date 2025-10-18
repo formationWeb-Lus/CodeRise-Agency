@@ -52,7 +52,8 @@
           <input id="telephone" type="tel" placeholder="+243..." required>
 
           <label class="micro muted">Type de projet</label>
-          <select id="projet">
+          <select id="projet" required>
+            <option value="">-- Choisissez un type de projet --</option>
             <option>Site vitrine</option>
             <option>Application mobile</option>
             <option>Logiciel / ERP</option>
@@ -64,7 +65,7 @@
 
           <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:12px">
             <button class="btn btn-outline" type="reset">Effacer</button>
-            <button class="btn btn-primary" type="submit">Envoyer</button>
+            <button class="btn btn-primary" type="submit" id="send-btn">Envoyer</button>
           </div>
         </form>
 
@@ -111,8 +112,12 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
+    // ✅ Fonction d’envoi du formulaire
     window.submitForm = function (event) {
       event.preventDefault();
+      const btn = document.getElementById("send-btn");
+      btn.disabled = true;
+      btn.textContent = "Envoi en cours...";
 
       const nom = document.getElementById("nom").value.trim();
       const email = document.getElementById("email").value.trim();
@@ -122,6 +127,8 @@
 
       if (!nom || !email || !numero || !projet || !message) {
         alert("Veuillez remplir tous les champs !");
+        btn.disabled = false;
+        btn.textContent = "Envoyer";
         return;
       }
 
@@ -134,14 +141,16 @@
         numero,
         projet,
         message,
-        date: Date.now() // ✅ format universel
+        date: new Date().toISOString()
       })
       .then(() => {
-        alert("✅ Message envoyé avec succès !");
-        event.target.reset();
+        // ✅ Redirection automatique vers la page de remerciement
+        window.location.href = "merci.html";
       })
       .catch((err) => {
         alert("❌ Erreur : " + err.message);
+        btn.disabled = false;
+        btn.textContent = "Envoyer";
       });
     };
   </script>
@@ -149,4 +158,3 @@
   <script src="assets/js/main.js"></script>
 </body>
 </html>
-

@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Merci — CodeRise Agency</title>
+  <meta name="description" content="Merci pour votre message — CodeRise Agency vous contactera sous peu." />
+  <link rel="icon" href="images/_CodeRise-Agency-Logo.jpg" type="image/jpeg">
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #0b1226, #111a3a);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    img.logo {
+      width: 90px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 12px rgba(255,255,255,0.1);
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      color: #f9f846;
+    }
+
+    p {
+      font-size: 1rem;
+      max-width: 400px;
+      margin: 0 auto 20px;
+      color: #ddd;
+    }
+
+    a.btn {
+      display: inline-block;
+      background: #f9f846;
+      color: #0b1226;
+      padding: 12px 28px;
+      border-radius: 30px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    a.btn:hover {
+      background: #fff;
+      transform: scale(1.05);
+    }
+
+    footer {
+      position: absolute;
+      bottom: 10px;
+      font-size: 0.8rem;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+  <img src="images/_CodeRise-Agency-Logo.jpg" alt="CodeRise Agency" class="logo">
+
+  <h1>Merci pour votre confiance 🙌</h1>
+  <p>Votre demande a bien été envoyée à <strong>CodeRise Agency</strong>.  
+  Notre équipe vous contactera dans les plus brefs délais pour discuter de votre projet.</p>
+
+  <a href="index.html" class="btn">⬅ Retour à l'accueil</a>
+
+  <footer>© <span id="year"></span> CodeRise Agency — Tous droits réservés</footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
