@@ -7,37 +7,67 @@
   <meta name="description" content="CodeRise Agency : Création d'applications, sites web, logiciels et formations pour entreprises et particuliers.">
   <link rel="icon" href="images/_CodeRise-Agency-Logo.jpg" type="image/jpeg">
   <style>
-    /* ======= RESET & BASE ======= */
+    /* ===== RESET & BASE ===== */
     * { margin:0; padding:0; box-sizing:border-box; font-family: 'Arial', sans-serif; }
-    body { background-color: #e6f0ff; color: #0d1f3c; line-height:1.6; }
+    body { background-color:#e6f0ff; color:#fff; line-height:1.6; }
 
     a { text-decoration:none; color: inherit; }
 
-    /* ======= HEADER ======= */
+    /* ===== HEADER ===== */
     header {
-      background-color: #005bb5;
-      color: white;
-      padding: 20px 0;
+      background-color:#005bb5;
+      color:white;
+      padding:15px 20px;
+      position: sticky;
+      top:0;
+      z-index:1000;
     }
-    .wrap { width:90%; max-width:1200px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; }
-    .logo { font-size: 24px; font-weight:bold; }
-    nav a { margin-left:20px; font-weight:bold; color:white; transition: 0.3s; }
+    .wrap { display:flex; align-items:center; justify-content:space-between; max-width:1200px; margin:0 auto; }
+    .logo { font-size:24px; font-weight:bold; }
+
+    nav {
+      display:flex;
+      align-items:center;
+    }
+    nav a {
+      margin-left:20px;
+      font-weight:bold;
+      color:white;
+      transition:0.3s;
+    }
     nav a:hover { color:#ffdd00; }
 
-    /* ======= HERO ======= */
+    /* Hamburger */
+    .menu-toggle {
+      display:none;
+      flex-direction:column;
+      justify-content:space-between;
+      width:25px;
+      height:20px;
+      cursor:pointer;
+    }
+    .menu-toggle span {
+      display:block;
+      height:3px;
+      width:100%;
+      background:white;
+      border-radius:2px;
+    }
+
+    /* ===== HERO ===== */
     .hero {
-      background-color: #3399ff;
+      background-color:#3399ff;
       color:white;
       text-align:center;
-      padding: 100px 20px 80px 20px;
+      padding:100px 20px 80px 20px;
     }
-    .hero h1 { font-size: 48px; margin-bottom:20px; }
-    .hero p { font-size: 20px; margin-bottom:30px; }
+    .hero h1 { font-size:48px; margin-bottom:20px; }
+    .hero p { font-size:20px; margin-bottom:30px; }
     .btn-primary {
-      background-color: #ffdd00;
-      color: #005bb5;
-      padding: 15px 30px;
-      border: none;
+      background-color:#ffdd00;
+      color:#005bb5;
+      padding:15px 30px;
+      border:none;
       border-radius:8px;
       font-size:18px;
       cursor:pointer;
@@ -45,12 +75,12 @@
     }
     .btn-primary:hover { background-color:#ffc700; }
 
-    /* ======= SERVICES ======= */
+    /* ===== SERVICES ===== */
     .services {
       padding:60px 20px;
-      background:#f0f8ff;
+      background:#0d1f3c;
     }
-    .services h2 { text-align:center; margin-bottom:40px; font-size:36px; color:#005bb5; }
+    .services h2 { text-align:center; margin-bottom:40px; font-size:36px; color:#ffdd00; }
     .service-cards {
       display:grid;
       grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
@@ -59,18 +89,17 @@
       margin:0 auto;
     }
     .card {
-      background:white;
+      background:#005bb5;
       padding:20px;
       border-radius:10px;
-      box-shadow:0 0 10px rgba(0,0,0,0.1);
       text-align:center;
       transition:0.3s;
     }
-    .card:hover { transform: translateY(-5px); box-shadow:0 5px 15px rgba(0,0,0,0.2); }
-    .card h3 { margin-bottom:15px; color:#005bb5; }
+    .card:hover { transform: translateY(-5px); background:#004494; }
+    .card h3 { margin-bottom:15px; color:#ffdd00; }
     .card p { font-size:16px; }
 
-    /* ======= CTA ======= */
+    /* ===== CTA ===== */
     .cta {
       background:#005bb5;
       color:white;
@@ -80,14 +109,28 @@
     .cta h2 { font-size:36px; margin-bottom:20px; }
     .cta p { font-size:20px; margin-bottom:30px; }
 
-    /* ======= FOOTER ======= */
+    /* ===== FOOTER ===== */
     footer { background:#0d1f3c; color:white; text-align:center; padding:30px 20px; }
     footer a { color:#ffdd00; }
 
-    /* ======= RESPONSIVE ======= */
+    /* ===== RESPONSIVE ===== */
     @media(max-width:768px){
       .hero h1 { font-size:36px; }
       .services h2, .cta h2 { font-size:28px; }
+
+      nav {
+        position:absolute;
+        top:60px;
+        right:0;
+        background:#005bb5;
+        flex-direction:column;
+        width:200px;
+        display:none;
+      }
+      nav a { margin:15px; }
+
+      .menu-toggle { display:flex; }
+      nav.active { display:flex; }
     }
   </style>
 </head>
@@ -96,9 +139,14 @@
   <!-- HEADER -->
   <header>
     <div class="wrap">
-      <div class="images/logo">CodeRise Agency</div>
-      <nav>
-        <a href="services.html">Services</a>
+      <div class="logo">CodeRise Agency</div>
+      <div class="menu-toggle" id="menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <nav id="nav">
+        <a href="#services">Services</a>
         <a href="contact.html">Créer votre projet</a>
         <a href="contact.html">Contact</a>
       </nav>
@@ -153,7 +201,14 @@
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    const toggle = document.getElementById('menu-toggle');
+    const nav = document.getElementById('nav');
+    toggle.addEventListener('click', () => {
+      nav.classList.toggle('active');
+    });
   </script>
 
 </body>
 </html>
+
