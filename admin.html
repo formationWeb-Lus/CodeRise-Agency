@@ -3,58 +3,67 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Admin — Messages reçus</title>
+  <title>Contact — CodeRise Agency</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #fafafa;
+      background: #f9f9f9;
       padding: 20px;
     }
-    h1 {
-      color: #222;
-    }
-    table {
-      border-collapse: collapse;
-      width: 100%;
-      margin-top: 20px;
+    h1 { color: #222; }
+    form {
       background: white;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+      max-width: 500px;
+      margin: auto;
     }
-    th, td {
-      border: 1px solid #ccc;
+    label { display:block; margin-top:10px; font-weight:bold; }
+    input, textarea {
+      width: 100%;
       padding: 8px;
-      text-align: left;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
       font-size: 14px;
     }
-    th {
-      background: #f3f3f3;
+    button {
+      margin-top: 15px;
+      padding: 10px 15px;
+      background: #0078d7;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
     }
-    tr:nth-child(even) {
-      background: #f9f9f9;
-    }
+    button:hover { background: #005bb5; }
   </style>
 </head>
 <body>
-  <h1>📩 Messages reçus — CodeRise Agency</h1>
+  <h1>📨 Contactez-nous</h1>
+  <form id="contactForm">
+    <label>Nom complet</label>
+    <input type="text" id="nom" required>
 
-  <table id="messagesTable">
-    <thead>
-      <tr>
-        <th>Nom</th>
-        <th>Email</th>
-        <th>Numéro</th>
-        <th>Projet</th>
-        <th>Message</th>
-        <th>Date de demande</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+    <label>Email</label>
+    <input type="email" id="email" required>
+
+    <label>Numéro</label>
+    <input type="tel" id="numero" required placeholder="+243...">
+
+    <label>Projet</label>
+    <input type="text" id="projet" required placeholder="Ex: Site web, Application mobile...">
+
+    <label>Message</label>
+    <textarea id="message" rows="4" required></textarea>
+
+    <button type="submit">Envoyer</button>
+  </form>
 
   <script type="module">
-    // Importation des modules Firebase
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+    import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
     // Configuration Firebase
     const firebaseConfig = {
@@ -67,37 +76,47 @@
       appId: "1:83774037241:web:38a48dd64585cd0b759628"
     };
 
-    // Initialisation de Firebase
+    // Initialisation Firebase
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
     const contactRef = ref(db, "contacts");
 
-    const tableBody = document.querySelector("#messagesTable tbody");
+    // Envoi du formulaire
+    const form = document.getElementById("contactForm");
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
 
-    // Lecture en temps réel des données
-    onValue(contactRef, (snapshot) => {
-      tableBody.innerHTML = "";
-      snapshot.forEach(child => {
-        const data = child.val();
+      const nom = document.getElementById("nom").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const numero = document.getElementById("numero").value.trim();
+      const projet = document.getElementById("projet").value.trim();
+      const message = document.getElementById("message").value.trim();
 
-        // Si la date n'existe pas, on la crée automatiquement
-        const dateDemande = data.date
-          ? new Date(data.date).toLocaleString()
-          : "—";
+      if (!nom || !email || !numero || !projet || !message) {
+        alert("Veuillez remplir tous les champs !");
+        return;
+      }
 
-        const row = `
-          <tr>
-            <td>${data.nom || ""}</td>
-            <td>${data.email || ""}</td>
-            <td>${data.numero || ""}</td>
-            <td>${data.projet || ""}</td>
-            <td>${data.message || ""}</td>
-            <td>${dateDemande}</td>
-          </tr>
-        `;
-        tableBody.innerHTML += row;
+      // Création d'une nouvelle entrée
+      const newContact = push(contactRef);
+
+      set(newContact, {
+        nom,
+        email,
+        numero,
+        projet,
+        message,
+        date: Date.now() // ✅ Enregistre un timestamp valide
+      })
+      .then(() => {
+        alert("✅ Message envoyé avec succès !");
+        form.reset();
+      })
+      .catch((error) => {
+        alert("❌ Erreur : " + error.message);
       });
     });
   </script>
 </body>
 </html>
+
